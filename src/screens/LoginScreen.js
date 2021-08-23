@@ -77,7 +77,7 @@ export default function LoginScreen(){
                         <CheckBox 
                         checked={che}
                         size={30}
-                        onPress={setChe}
+                        onPress={() => !setChe}
                         color={colors.cFFFFFF}
                         />
 
