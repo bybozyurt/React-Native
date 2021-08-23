@@ -7,7 +7,9 @@ import {
   View,
 } from 'react-native';
 import Navigation from './src/navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
+Icon.loadFont();
 
 export default function App(){
 
