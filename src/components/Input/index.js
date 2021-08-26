@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { fonts, colors } from '../../constants';
 
 export default function Input(
     {onChangeText, 
@@ -21,36 +24,53 @@ export default function Input(
     
 
     return (
-        <View style={{
-            flexDirection:'row', 
-            paddingBottom:10, 
-            borderBottomWidth:1, 
-            borderBottomColor:'#97a1be',
-            alignItems:'center',
-            justifyContent:'center',
-            marginTop:20,
-            marginBottom:-15
-            }}>
+        <View style={[styles.container ,{...style}]}>
             
-            <Icon name={icon} size={26} color={color} style={{marginRight:15}}/>
+            <Icon name={icon} size={26} color={color} style={styles.icon}/>
             <TextInput 
             onChangeText={onChangeText} 
-            isHidden={isHidden} 
             value={value}
             placeholder={placeHolder}
             placeholderTextColor={placeHolderTextColor}
-            // secureTextEntry={isHidden ? !showPass : false}
-            secureTextEntry={secureTextEntry ? !showPass : false}
-            style={[{
-                marginTop:3,
-                fontSize:13, 
-                fontWeight:'600',
-        
-            },{color}]}
+            secureTextEntry={isHidden ? !showPass : false}
+            style={[styles.text,{color}]}
             
             />
+            {isHidden && <Icon
+             name ={showPass ? 'visibility' : 'visibility-off'} 
+             onPress={()=> setShowPass(pass => !pass)}
+             color={color}
+             style={styles.icon}
+             size={26}
+             />
+             }
 
-            <Icon name={iconTwo} size={26} color={color} onPress={()=> alert('Parola Gözüktü')} />
-        </View>
+            </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+
+    icon:{
+        marginRight:15
+    
+    },
+
+    container:{
+    flexDirection:'row', 
+    paddingBottom:10, 
+    borderBottomWidth:1, 
+    borderBottomColor:'#97a1be',
+    marginHorizontal:17
+    },
+
+    text:{
+    marginTop:3,
+    fontSize:fonts.f13, 
+    fontWeight:'600',
+    fontSize:fonts.f13,
+    letterSpacing:1,
+    width:'80%'
+    },
+});

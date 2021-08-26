@@ -1,10 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
+import { useSelector } from 'react-redux';
+import RegisterScreen from '../screens/RegisterScreen';
 
 export const AppScreens = {
     login:'Login',
-    home:'Home'
+    home:'Home',
+    register:'Register',
 };
 
 
@@ -14,12 +18,26 @@ const Stack = createStackNavigator();
 
 export default function StackNavigator(){
 
-    const isLogin = false;
+    const isLogin = useSelector(state => state.system.isLogin);
+    
     const initialRouteName = isLogin ? AppScreens.home : AppScreens.login;
 
     return(
         <Stack.Navigator initialRouteName={initialRouteName} >
-            <Stack.Screen  name={AppScreens.login} component={LoginScreen}  options={{headerShown:false}}/>
+            {isLogin ? <Stack.Screen
+             name={AppScreens.home} 
+             component={HomeScreen} /> 
+            : <Stack.Screen  
+            name={AppScreens.login} 
+            component={LoginScreen}  
+            options={{headerShown:false}}
+
+            />}
+        <Stack.Screen 
+        name={AppScreens.register} 
+        component={RegisterScreen}
+        />
+            
         </Stack.Navigator>
     );
 }

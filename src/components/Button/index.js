@@ -5,6 +5,7 @@ import styles from './style';
 export default function Button({
     onPress,
     title,
+    style
     
 }) {
     return (

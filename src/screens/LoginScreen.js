@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
-import {StyleSheet,View, Image, Text, SafeAreaView, Platform, StatusBar, KeyboardAvoidingView, ScrollView, Switch} from 'react-native';
-import {images,colors} from '../constants'
+import React, { useState} from 'react';
+import {StyleSheet,View, Image, Text, SafeAreaView, Platform, StatusBar, KeyboardAvoidingView, ScrollView, Switch, TouchableOpacity} from 'react-native';
+import {images,colors, fonts} from '../constants'
 import Input from '../components/Input';
 import Button from '../components/Button';
 import CheckBox from '../components/CheckBox';
 import DeviceInfo from 'react-native-device-info';
-import {getUniqueI, getManufacturer } from 'react-native-device-info';
+import I18n from '../i18n';
+import { hideLoader, setUser, toogleLoader } from '../redux/system/action';
+import {useDispatch,useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import { AppScreens } from '../navigation/RootNavigation';
+
+
+
+
 export default function LoginScreen(){
 
+    const usernameText = I18n.t("username")
+    const passwordText = I18n.t("password")
+    const rememberMeText = I18n.t("rememberMe")
+    const loginText = I18n.t("login")
+    const registerText = I18n.t("register");
+
     let version = DeviceInfo.getVersion();
-    console.log("Version", version);
+    
 
     const [pageData, setPageData] = useState({
         username:'',
@@ -21,75 +35,126 @@ export default function LoginScreen(){
         setPageData(page => ({...page, [key]:value}))
     };
 
-    const [che, setChe] = useState(false);
+
 
     const [isDarkMode, setIsDarkMode] = useState(false);
     const toogleSwitch = () => setIsDarkMode(previousState => !previousState);
 
-    const theme = isDarkMode ? styles.darkTheme : styles.lightTheme;
+    const theme = isDarkMode ? styles.lightTheme : styles.darkTheme;
+
+    const [rememberMe, setRememberMe] = useState(false);
+
+    const handleRememberMe = () =>{
+
+        setRememberMe(remember => !remember);
+    };
+
+    const dispatch = useDispatch();
+
+    const onLogin = () => {
+
+        dispatch(toogleLoader());
+
+
+        dispatch(setUser({
+            name:'Ahmet',
+            surname:'Bozyurt',
+            age:22
+        }));
+
+        
+        dispatch(hideLoader());
+
+    };
+
+    const userInfo = useSelector(state => state.system.userInfo);
+    //console.log("userInfo",userInfo);
+
+    const navigation = useNavigation();
+
+    const goRegister = () =>{
+        navigation.navigate(AppScreens.register);
+        
+    };
+    
+
+    
+
+    
 
 
     
 
     return(
-        // <KeyboardAvoidingView 
-        // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        // style={styles.container}>
+        
             
-                <ScrollView 
-                style = {{backgroundColor:theme.backgroundColor}}
+            <SafeAreaView 
+                style = {styles.container}
                 showsVerticalScrollIndicator = {false}>
-                <View style={{marginVertical:120}}>
+                <View style={[styles.innerContainer, {backgroundColor:theme.backgroundColor}]}>
+                    <View style={styles.logoContainer}>
+
                     <Image 
                     source={images.logo}
-                    style={{width:300,height:100,marginLeft:50}}
+                    style={styles.logo}
                     resizeMethod='scale'
                     resizeMode='contain'
                     />
+                    </View>
                     <View style={{marginVertical:15}}>
                     <Input 
                         onChangeText={text => onChangeText('username', text)}
                         value={pageData.username}
-                        placeHolder={'Kullanıcı Adı'}
+                        placeHolder={usernameText}
                         placeHolderTextColor={'gray'}
                         icon={'mail-outline'}
                         color={colors.cFFFFFF}
                         placeHolderTextColor={colors.cFFFFFF}
+                        style={styles.input}
                     />
                     </View>
                     <View style={{marginVertical:15}}>
                     <Input 
+                        isHidden
                         onChangeText={text => onChangeText('password',text)}
                         value={pageData.password}
-                        placeHolder={'Parola'}
+                        placeHolder={passwordText}
                         placeHolderTextColor={'gray'}
                         icon={'lock-outline'}
                         color={colors.cFFFFFF}
                         placeHolderTextColor={colors.cFFFFFF}
-                        iconTwo={'visibility-off'}
-                        secureTextEntry={true}
-                        
+                        style={styles.input}
+                                            
  
                     />
                     </View>
-                    <View style={{marginVertical:15}}>
+                    <View style={styles.rememberMeContainer}>
 
                         <CheckBox 
-                        checked={che}
-                        size={30}
-                        onPress={() => !setChe}
-                        color={colors.cFFFFFF}
-                        />
+                        checked={rememberMe}
+                        onChangeState={() => handleRememberMe()}
+                        color={colors.dark.white[50]}/>
+                        <Text style={styles.rememberMeText}>{rememberMeText}</Text>
 
                     </View>
 
-                    <View style={{marginVertical:15}}>
+                    <View style={{marginVertical:5}}>
                         <Button
                         
-                        onPress={()=> {alert("Giriş")}}
-                        title='Giriş Yap'
+                        onPress={()=> onLogin()}
+                        title={loginText}
                         />
                     </View>
+
+                    <View style={{
+                    alignItems:'center', 
+                    justifyContent:'center', 
+                    }}>
+                    <TouchableOpacity onPress={()=> goRegister()}>
+                        <Text style={{color:colors.cFFFFFF}}>{registerText}</Text>
+                    </TouchableOpacity>
+                    </View>
+
                     <View>
                         <Switch
                             value={isDarkMode}
@@ -97,13 +162,15 @@ export default function LoginScreen(){
                         />
                     </View>
 
+                    
+
                     <View style={styles.versionView}>
                         <Text style={styles.versionText}>v{version}</Text>
 
                     </View>
                     
                 </View>
-                </ScrollView>
+                </SafeAreaView>
             
         
     );
@@ -114,10 +181,9 @@ export default function LoginScreen(){
 const styles = StyleSheet.create({
     container:{
         
-        flex:1, 
-        justifyContent:'center', 
-        alignItems:'center',
+        flex:1,
         backgroundColor:colors.backgroundColor,
+        
     },
 
     versionView:{
@@ -142,6 +208,36 @@ const styles = StyleSheet.create({
         backgroundColor:'rgb(50,76,148)',
         color:colors.cFFFFFF
     },
+    innerContainer:{
+        flex:1,
+        backgroundColor:colors.backgroundColor,
+        justifyContent:'center', 
+    },
+    logo:{ 
+        width:300, 
+        height:100},
+
+    logoContainer:{ 
+        marginBottom:25, 
+        alignItems:'center', 
+        marginVertical:190},
+
+    input:{
+        marginVertical:5,
+        alignItems:'center'
+    },
+    rememberMeContainer: {
+        marginVertical: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 17,
+      },
+      rememberMeText: {
+        fontSize: fonts.f12,
+        fontWeight: '500',
+        color: colors.cFFFFFF,
+        marginHorizontal:17
+      },
 
 
         

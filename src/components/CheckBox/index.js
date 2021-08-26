@@ -5,20 +5,24 @@ import { colors } from '../../constants'
 
  export default function CheckBox({
 
-     checked,
-     style,
-     onChangeState,
-     color,
-     size,
-     onPress,
      
-    
+    checked,
+    style,
+    onChangeState,
+     
+     
+
  }) {
      return (
         
-        <TouchableOpacity style={styles.CheckBox} onPress={onPress}>
-             <Icon name={checked ? 'check-box' : 'check-box-outline-blank'} color={color} size={size}/>
-    
+        <TouchableOpacity onPress={()=> onChangeState && onChangeState(!checked)}
+        style={[styles.container, {...style}]}>
+        {checked && (
+            <Icon 
+            name={checked ? 'check-box' : 'check-box-outline-blank'}  
+            size={20}/>
+        )}
+             
          </TouchableOpacity>
      );
  }
@@ -26,11 +30,18 @@ import { colors } from '../../constants'
 
 
 const styles = StyleSheet.create({
-    checkBox: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor:'white'
-    }
+    container:{
+
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 5,
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+        
+    },
+    
 })
 
 
