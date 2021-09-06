@@ -4,12 +4,21 @@ import {I18nManager} from 'react-native';
 import en from './en';
 import tr from './tr';
 
+const translations ={
+    tr,
+    en,
+};
+
 const locales = RnLocalize.getLocales();
 
-//console.log("Locales",locales);
+console.log("Locales",locales);
 
 //dilimizin kodunu getirir
 I18n.locale = locales[0].languageTag;
+
+export const changeLanguage = language => {
+    I18n.locale = language;
+};
 
 //gelen dil nereden başlıyor sol mu sağ mı
 export const isRtl = locales[0].isRTL;
@@ -24,8 +33,5 @@ I18n.fallbacks = true;
 I18n.locales.no ='tr';
 
 //dilleri nesne olarak aldık dışarıda kullanacağız
-I18n.translations={
-    tr,
-    en
-};
+I18n.translations = translations;
 export default I18n;

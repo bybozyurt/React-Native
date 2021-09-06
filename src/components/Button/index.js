@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity,StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './style';
 
 export default function Button({
@@ -9,7 +9,7 @@ export default function Button({
     
 }) {
     return (
-        <View style={styles.Container}>
+        <View style={[styles.Container],{...style}}>
         <TouchableOpacity onPress={onPress} style={styles.Button}>
             <Text  style={styles.Text}>{title}</Text>
         </TouchableOpacity>

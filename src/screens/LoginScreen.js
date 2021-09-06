@@ -10,6 +10,10 @@ import { hideLoader, setUser, toogleLoader } from '../redux/system/action';
 import {useDispatch,useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import { AppScreens } from '../navigation/RootNavigation';
+import {CustomView} from '../components/CustomView';
+import { getUser } from '../redux/system/selector';
+
+
 
 
 
@@ -25,10 +29,11 @@ export default function LoginScreen(){
     let version = DeviceInfo.getVersion();
     
 
-    const [pageData, setPageData] = useState({
-        username:'',
-        password:''
-    });
+     const [pageData, setPageData] = useState({
+         username:'',
+         password:''
+     });
+
 
     const onChangeText = (key,value) =>{
         console.log('key,value',pageData,key,value);
@@ -51,24 +56,56 @@ export default function LoginScreen(){
 
     const dispatch = useDispatch();
 
+    const user = getUser();
+    console.log("user",user);
+    const userName = user.username;
+    const passWord = user.password;
+
+    
+
     const onLogin = () => {
 
         dispatch(toogleLoader());
 
 
-        dispatch(setUser({
-            name:'Ahmet',
-            surname:'Bozyurt',
-            age:22
-        }));
+        
+        
+   
+
+         if(userName === pageData.username && passWord === pageData.password){
+
+                  
+            dispatch(setUser());
+            
+            
+
+        }
+        else{
+            alert("Hatalı Deneme");
+        }
+
+        
+        
+
+
+        // }
+
+        // else{
+        // console.log("hata");
+        // }
+
+
+
 
         
         dispatch(hideLoader());
 
     };
 
-    const userInfo = useSelector(state => state.system.userInfo);
-    //console.log("userInfo",userInfo);
+    
+    
+
+
 
     const navigation = useNavigation();
 
@@ -141,7 +178,7 @@ export default function LoginScreen(){
                     <View style={{marginVertical:5}}>
                         <Button
                         
-                        onPress={()=> onLogin()}
+                        onPress={() => onLogin()}
                         title={loginText}
                         />
                     </View>
@@ -182,7 +219,7 @@ const styles = StyleSheet.create({
     container:{
         
         flex:1,
-        backgroundColor:colors.backgroundColor,
+        
         
     },
 

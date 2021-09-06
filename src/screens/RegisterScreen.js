@@ -1,24 +1,74 @@
-
 import React, {useState} from 'react';
 import {SafeAreaView, Text, View, StyleSheet, Image} from 'react-native';
 import {colors, fonts, images} from '../constants';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import I18n from 'i18n-js';
+import {setRegister} from '../redux/system/action';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 export default function RegisterScreen(){
 
-    const [pageData, setPageData] = useState({
-        username:'',
-        password:'',
-        secondPassword:'',
-    });
+    
 
     const usernameText = I18n.t("username");
     const passwordText = I18n.t("password");
     const registerText = I18n.t("register");
+    
 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [secondPassword, setSecondPassword] = useState('');
+
+   
+
+
+
+
+    
+
+    const dispatch = useDispatch();
+
+    const onRegister =  () => {
+
+        try {
+
+            if(password === secondPassword){
+               
+                dispatch(setRegister({
+                    username:username,
+                    password:password,
+                    job:'Mobile Developer',
+                    mobile:'050303030303',
+                    profilePic:null,
+                    country:'Turkey',
+                    technologies:'React-native'                     
+                }));
+      
+                console.log("Username ve Password kayıt edildi");
+    
+                
+
+    
+            }
+            else{
+                alert("Şifreler aynı olmalı");
+            }
+
+            
+        } catch (e) {
+
+            console.log("Multi set hata verdi", e);
+            
+        }
+
+
+    }
+
+    
 
    
         
@@ -43,10 +93,13 @@ export default function RegisterScreen(){
             <Input 
             placeHolder={usernameText}
             placeHolderTextColor={'gray'}
-            value={pageData.username}
+            value={username}
             color={colors.cFFFFFF}
             icon={'mail-outline'}
             style={{alignItems:'center',}}
+            value={username}
+            onChangeText={setUsername}
+            
             />
         </View>
 
@@ -55,10 +108,13 @@ export default function RegisterScreen(){
             isHidden
             placeHolder={passwordText}
             placeHolderTextColor={'gray'}
-            value={pageData.password}
+            value={password}
             color={colors.cFFFFFF}
             icon={'lock-outline'}
             style={{alignItems:'center'}}
+            onChangeText={setPassword}
+        
+            
             />
         </View>
 
@@ -67,15 +123,17 @@ export default function RegisterScreen(){
             isHidden
             placeHolder={passwordText}
             placeHolderTextColor={'gray'}
-            value={pageData.secondPassword}
+            value={secondPassword}
             color={colors.cFFFFFF}
             icon={'lock-outline'}
             style={{alignItems:'center'}}
+            onChangeText={setSecondPassword}
+            
             />
         </View>
 
         <View>
-            <Button title={registerText} style={{fontWeight:'bold'}}/>
+            <Button title={registerText} onPress={()=> onRegister()} style={{fontWeight:'bold'}}/>
         </View>
 
     

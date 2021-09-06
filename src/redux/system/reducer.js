@@ -1,17 +1,27 @@
-import {TOGGLE_LOADER, HIDE_LOADER, SET_LANGUAGE, SET_THEME, SET_USER, USER_LOGOUT, SET_REGISTER} from './actionTypes';
+import {TOGGLE_LOADER, HIDE_LOADER, SET_LANGUAGE, SET_THEME, SET_USER, USER_LOGOUT, SET_REGISTER, SAVE_PROJECT} from './actionTypes';
 
 
 const initialState = {
     loading:false,
-    userInfo:{},
     token:'',
-    language: 'TR',
+    language: 'tr',
     isDarkMode:false,
     isLogin:false,
+    user:{},
+    projectDetail:{},
+
+    
     
 };
 
+
+
+
+
+
+
 export function systemReducer(state = initialState, action){
+    
     switch (action.type) {
         case TOGGLE_LOADER:
             return{...state, loading:true};
@@ -28,26 +38,33 @@ export function systemReducer(state = initialState, action){
         case USER_LOGOUT:
             return{
                 ...state,
-                userInfo:{},
                 loading:false,
                 token:'',
-                language:'TR',
+                language:'tr',
                 isLogin:false
 
             };
         case SET_USER:
             return{
-                ...state,
-                userInfo:action.payload,
-                isLogin:true,
+            ...state,
+            isLogin:true,
                 
-            };
+        };
+
         case SET_REGISTER:
             return{
                 ...state,
-
-
+                user:action.payload,
+                
             };
+        
+        case SAVE_PROJECT:
+            return{
+                ...state,
+                projectDetail:action.payload,
+
+            }
+
 
         default:
             return state;
