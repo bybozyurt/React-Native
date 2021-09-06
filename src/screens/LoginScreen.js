@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import {StyleSheet,View, Image, Text, SafeAreaView, Platform, StatusBar, KeyboardAvoidingView, ScrollView, Switch, TouchableOpacity} from 'react-native';
 import {images,colors, fonts} from '../constants'
 import Input from '../components/Input';
@@ -6,16 +6,13 @@ import Button from '../components/Button';
 import CheckBox from '../components/CheckBox';
 import DeviceInfo from 'react-native-device-info';
 import I18n from '../i18n';
-import { hideLoader, setUser, toogleLoader } from '../redux/system/action';
+import { fetchUser, hideLoader, setUser, toogleLoader } from '../redux/system/action';
 import {useDispatch,useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import { AppScreens } from '../navigation/RootNavigation';
-import {CustomView} from '../components/CustomView';
-import { getUser } from '../redux/system/selector';
 
-
-
-
+import { getFetchUserInfo, getUser } from '../redux/system/selector';
+import axios from 'axios';
 
 
 export default function LoginScreen(){
@@ -40,8 +37,6 @@ export default function LoginScreen(){
         setPageData(page => ({...page, [key]:value}))
     };
 
-
-
     const [isDarkMode, setIsDarkMode] = useState(false);
     const toogleSwitch = () => setIsDarkMode(previousState => !previousState);
 
@@ -56,35 +51,71 @@ export default function LoginScreen(){
 
     const dispatch = useDispatch();
 
+    // Kayıt Olan Kullanıcın bilgileri
     const user = getUser();
-    console.log("user",user);
     const userName = user.username;
     const passWord = user.password;
+
+    
+    
+    //Selector.js dosyamızdaki metodu kullanarak apideki bilgilerimiz aldık
+    const fetchUserInfo = getFetchUserInfo();
+    const fetchUsername = fetchUserInfo.fetchUsername;
+    const fetchPassword = fetchUserInfo.fetchPassword;
+
+    const apiUrl = 'https://randomuser.me/api/';
+
+    async function fetchUserData() {
+    
+        try {
+            const response = await axios.get(apiUrl);
+            const fetchUsername = JSON.stringify(response.data.results[0].login.username);
+            const fetchPassword = JSON.stringify(response.data.results[0].login.password);
+            
+            if(fetchUsername && fetchPassword){
+                dispatch(fetchUser({
+                    fetchUsername:fetchUsername,
+                    fetchPassword:fetchPassword
+
+                }));
+            }
+            else{
+                console.log("Response alırken hata alındı");
+            }
+            
+        } 
+        
+        catch (error) {
+            console.log("Axios hatası", error);
+            
+        }
+    };
+
+    useEffect(() => {
+       
+        fetchUserData();
+        
+    }, []);
 
     
 
     const onLogin = () => {
 
         dispatch(toogleLoader());
-
-
-        
-        
    
-
-         if(userName === pageData.username && passWord === pageData.password){
+        if((fetchUsername === pageData.username && fetchPassword === pageData.password) 
+            || 
+            userName === pageData.username && passWord === pageData.password){
 
                   
             dispatch(setUser());
             
-            
-
+        
         }
         else{
             alert("Hatalı Deneme");
         }
 
-        
         
 
 
@@ -93,10 +124,6 @@ export default function LoginScreen(){
         // else{
         // console.log("hata");
         // }
-
-
-
-
         
         dispatch(hideLoader());
 

@@ -25,3 +25,9 @@ export function getProject(){
 
     return project;
 }
+
+export function getFetchUserInfo(){
+    const fetchUserInfo = useSelector(state => state.system.fetchUsers);
+    
+    return fetchUserInfo;
+}

@@ -1,4 +1,4 @@
-import {TOGGLE_LOADER, HIDE_LOADER, SET_THEME, SET_USER, USER_LOGOUT, SET_REGISTER, SET_LANGUAGE, SAVE_PROJECT } from './actionTypes';
+import {TOGGLE_LOADER, HIDE_LOADER, SET_THEME, SET_USER, USER_LOGOUT, SET_REGISTER, SET_LANGUAGE, SAVE_PROJECT, FETCH_USER } from './actionTypes';
 
 export function toogleLoader(){
     return{
@@ -33,7 +33,9 @@ export function setLogout(){
     };
 }
 
+
 export function setRegister(payload){
+    //console.log("payloadReg",payload);
     return{
         type:SET_REGISTER,
         payload
@@ -42,7 +44,7 @@ export function setRegister(payload){
 
 export function setLanguage(payload){
 
-    console.log("langusadaage",payload);
+    //console.log("langusadaage",payload);
     return{
         type:SET_LANGUAGE,
         payload
@@ -52,12 +54,21 @@ export function setLanguage(payload){
 
 export function saveProject(payload){
 
-    console.log("saveProject",payload);
+    //console.log("saveProject",payload);
 
     return{
         type:SAVE_PROJECT,
         payload
         
+    };
+}
+
+export function fetchUser(payload){
+    console.log("payload",payload);
+    
+    return{
+        type:FETCH_USER,
+        payload
     };
 }
 

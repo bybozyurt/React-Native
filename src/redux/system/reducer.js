@@ -1,4 +1,14 @@
-import {TOGGLE_LOADER, HIDE_LOADER, SET_LANGUAGE, SET_THEME, SET_USER, USER_LOGOUT, SET_REGISTER, SAVE_PROJECT} from './actionTypes';
+import {TOGGLE_LOADER, 
+        HIDE_LOADER, 
+        SET_LANGUAGE, 
+        SET_THEME, 
+        SET_USER, 
+        USER_LOGOUT, 
+        SET_REGISTER, 
+        SAVE_PROJECT, 
+        FETCH_USER,
+
+    } from './actionTypes';
 
 
 const initialState = {
@@ -9,6 +19,7 @@ const initialState = {
     isLogin:false,
     user:{},
     projectDetail:{},
+    fetchUsers:{}
 
     
     
@@ -20,8 +31,14 @@ const initialState = {
 
 
 
+
+
+
 export function systemReducer(state = initialState, action){
+
     
+    
+        
     switch (action.type) {
         case TOGGLE_LOADER:
             return{...state, loading:true};
@@ -44,6 +61,7 @@ export function systemReducer(state = initialState, action){
                 isLogin:false
 
             };
+
         case SET_USER:
             return{
             ...state,
@@ -59,11 +77,21 @@ export function systemReducer(state = initialState, action){
             };
         
         case SAVE_PROJECT:
+            
             return{
                 ...state,
                 projectDetail:action.payload,
 
             }
+        
+        case FETCH_USER:
+            return{
+                ...state,
+                fetchUsers:action.payload,
+
+            }
+        
+        
 
 
         default:

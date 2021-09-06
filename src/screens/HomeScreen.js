@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import {Text,View, StyleSheet} from 'react-native';
 import CustomButton from '../components/Button';
 import { setLogout, saveProject } from '../redux/system/action';
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { colors } from '../constants';
 import {layout} from '../constants';
 import CustomView from '../components/CustomView';
-import { useNavigation } from '@react-navigation/native';
-import { AppScreens } from '../navigation/RootNavigation';
 import Header from '../components/Header';
 import Input from '../components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProject} from '../redux/system/selector';
+
 
 
 export default function HomeScreen({navigation}){
@@ -82,6 +81,7 @@ export default function HomeScreen({navigation}){
 
            <View style={{marginVertical:15}}>
                <Input
+               icon={'timer'}
                value={time}
                placeHolder={'Süre Giriniz'}
                placeHolderTextColor={colors.cFFFFFF}
@@ -94,6 +94,7 @@ export default function HomeScreen({navigation}){
 
            <View style={{marginVertical:15}}>
                <Input
+               icon={'laptop-chromebook'}
                value={project}
                placeHolder={'Proje giriniz'}
                placeHolderTextColor={colors.cFFFFFF}

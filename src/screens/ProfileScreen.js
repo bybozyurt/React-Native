@@ -5,7 +5,6 @@ import {setLogout, setTheme} from '../redux/system/action';
 import CustomView from '../components/CustomView';
 import {getIsDarkMode, getLang, getUser} from '../redux/system/selector';
 import Header from '../components/Header';
-import {Picker} from '@react-native-picker/picker';
 import Dropdown from '../components/DropDown';
 import I18n, {changeLanguage} from '../i18n';
 import { setLanguage } from '../redux/system/action';
@@ -13,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import {fonts, colors} from '../constants';
 import Button from '../components/Button';
 import CustomText from '../components/Text';
-import { color } from 'react-native-reanimated';
+
 
 
 
@@ -142,12 +141,13 @@ export default function ProfileScreen() {
         <View style={styles.infoContainer}>
 
           <View style={cellStyle}>
-          <Text style={styles.title}>Dil Seçimi</Text>
+          <CustomText style={styles.title} text={'Dil Seçimi'}></CustomText>
           <Dropdown
             items={[
               {label: 'Türkçe', value: 'tr'},
               {label: 'English', value: 'en'},
             ]}
+            style={{color:colors.c324c94}}
             placeholder="Dil Seçiniz"
             value={language}
             onValueChange={val => handleLanguageChange(val)}
