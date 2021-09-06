@@ -100,17 +100,17 @@ export default function ProfileScreen() {
       
       }
       </View>
-      <View style={cellStyle}>
+      {/* <View style={cellStyle}>
         <CustomText style={styles.displayName} text={user.username}></CustomText>
-      </View>
+      </View> */}
 
       <View style={infoBoxStyle}>
         <View style={styles.infoContainer}>
 
-          {/* <View style={cellStyle}>
-            <Text style={styles.title}>Kullanıcı Adı</Text>
-            <Text style={styles.info}>{user.username}</Text>
-          </View> */}
+           <View style={cellStyle}>
+            <CustomText style={styles.title} text={'Kullanıcı Adı'}></CustomText>
+            <CustomText style={styles.info} text={user.username}></CustomText>
+          </View> 
 
           <View style={cellStyle}>
             <CustomText style={styles.title} text={'Telefon'}></CustomText>
