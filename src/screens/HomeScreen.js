@@ -112,12 +112,12 @@ export default function HomeScreen({navigation}){
                 />
            </View>
 
-           <View style={{marginVertical:15, alignItems:'center'}}>
-               <Text style={{fontSize:15, fontWeight:'bold'}}>{projectDetail.project}</Text>
+           <View style={styles.metaContainer}>
+               <Text style={styles.text}>{projectDetail.project}</Text>
            </View>
 
-           <View style={{marginVertical:15, alignItems:'center'}}>
-               <Text style={{fontSize:15, fontWeight:'bold'}}>{projectDetail.time}</Text>
+           <View style={styles.metaContainer}>
+               <Text style={styles.text}>{projectDetail.time}</Text>
            </View>
 
 
@@ -142,5 +142,15 @@ const styles = StyleSheet.create({
         marginVertical:5,
         alignItems:'center'
     },
+    text:{
+        fontSize:15, 
+        fontWeight:'bold',
+
+    },
+    metaContainer:{
+        marginVertical:15,
+        alignItems:'center'
+
+    }
 });
 
