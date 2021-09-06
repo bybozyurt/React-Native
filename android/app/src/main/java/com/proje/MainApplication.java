@@ -11,7 +11,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.oblador.vectoricons.VectorIconsPackage;
-
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
          
           new VectorIconsPackage();
+          new SplashScreenReactPackage();
          
           return packages;
         }

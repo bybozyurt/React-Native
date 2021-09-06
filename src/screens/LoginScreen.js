@@ -11,6 +11,7 @@ import {useDispatch,useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import { AppScreens } from '../navigation/RootNavigation';
 
+
 import { getFetchUserInfo, getUser } from '../redux/system/selector';
 import axios from 'axios';
 
@@ -92,8 +93,9 @@ export default function LoginScreen(){
     };
 
     useEffect(() => {
-       
+        
         fetchUserData();
+        
         
     }, []);
 
