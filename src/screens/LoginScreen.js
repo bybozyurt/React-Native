@@ -69,8 +69,8 @@ export default function LoginScreen(){
     
         try {
             const response = await axios.get(apiUrl);
-            const fetchUsername = JSON.stringify(response.data.results[0].login.username);
-            const fetchPassword = JSON.stringify(response.data.results[0].login.password);
+            const fetchUsername = response.data.results[0].login.username
+            const fetchPassword = response.data.results[0].login.password
             
             if(fetchUsername && fetchPassword){
                 dispatch(fetchUser({
@@ -106,25 +106,15 @@ export default function LoginScreen(){
         if((fetchUsername === pageData.username && fetchPassword === pageData.password) 
             || 
             userName === pageData.username && passWord === pageData.password){
-
-                  
-            dispatch(setUser());
-            
+       
+            dispatch(setUser()); 
         
         }
         else{
             alert("Hatalı Deneme");
         }
 
-        
-
-
-        // }
-
-        // else{
-        // console.log("hata");
-        // }
-        
+    
         dispatch(hideLoader());
 
     };
