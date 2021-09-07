@@ -66,6 +66,7 @@ export function systemReducer(state = initialState, action){
             return{
             ...state,
             isLogin:true,
+            
                 
         };
 

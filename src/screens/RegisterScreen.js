@@ -7,6 +7,7 @@ import I18n from 'i18n-js';
 import {setRegister} from '../redux/system/action';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getIsDarkMode } from '../redux/system/selector';
 
 
 
@@ -22,6 +23,9 @@ export default function RegisterScreen(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [secondPassword, setSecondPassword] = useState('');
+
+    const isDarkMode = getIsDarkMode();
+    const theme = isDarkMode ? styles.lightTheme : styles.darkTheme;
 
    
 
@@ -76,7 +80,7 @@ export default function RegisterScreen(){
 
     return(
         <SafeAreaView style={styles.container}>
-        <View style={{}}>
+        <View style={[styles.innerContainer, {backgroundColor:theme.backgroundColor}]}>
 
 
         <View style={styles.logoContainer}>
@@ -161,12 +165,20 @@ const styles = StyleSheet.create({
     logoContainer:{ 
         marginBottom:25, 
         alignItems:'center', 
-        marginVertical:100
+        
     },
     innerContainer:{
         flex:1,
         backgroundColor:colors.backgroundColor,
         justifyContent:'center', 
+    },
+    lightTheme:{
+        backgroundColor:colors.c000000,
+        color:colors.c000000
+    },
+      darkTheme:{
+        backgroundColor:'rgb(50,76,148)',
+        color:colors.cFFFFFF
     },
 
 })

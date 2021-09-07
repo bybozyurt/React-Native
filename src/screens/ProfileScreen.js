@@ -151,7 +151,11 @@ export default function ProfileScreen() {
             placeholder="Dil Seçiniz"
             value={language}
             onValueChange={val => handleLanguageChange(val)}
-            onDonePress={() => onDonePress()}/>
+            onDonePress={() => onDonePress()}
+            color={isDarkMode ? colors.cFFFFFF : colors.c324c94}
+            
+            />
+      
           </View>
 
           <View style={cellStyle}>

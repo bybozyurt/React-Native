@@ -15,13 +15,11 @@ export default function Input(
     value='',
     style,
     color,
+    ...props
     })
          
 {
     const [showPass, setShowPass] = useState(false);
-    
-
-    
     
 
     return (
@@ -35,6 +33,8 @@ export default function Input(
             placeholderTextColor={placeHolderTextColor}
             secureTextEntry={isHidden ? !showPass : false}
             style={[styles.text,{color}]}
+            underlineColorAndroid="transparent"
+            {...props}
             
             />
             {isHidden && <Icon

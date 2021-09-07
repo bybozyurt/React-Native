@@ -11,6 +11,10 @@ export default function Dropdown({
     style={},
     onValueChange,
     placeholder = 'Seçiniz',
+    color,
+    borderColor,
+    
+
     onDonePress = ()=> {},
 
 }) {
@@ -25,31 +29,34 @@ export default function Dropdown({
         items={items}
         value={value}
         doneText={doneText}
-        placeholder={{label: placeholder}}
+        placeholder={{label: placeholder, value:null}}
+        
+
         style={{
           inputIOS: {
             fontSize: fonts.f13,
             fontWeight: 'bold',
-            color: colors.cFFFFFF,
+            color: color ? color : isDark ? colors.cFFFFFF : colors.c324c94,
+            borderColor
           },
           inputAndroid: {
             fontSize: fonts.f13,
             fontWeight: 'bold',
-            color: colors.cFFFFFF,
-            top: 0,
+            color: color ? color : isDark ? colors.c324c94 : colors.c324c94,
+            borderColor
           },
         }}
         onDonePress={() => onDonePress()}
-        Icon={() => {
-          return (
-            <Icon
-              name="expand-more"
-              size={20}
-              color={'#ffffff'}
-              style={iconStyle}
-            />
-          );
-        }}
+        // Icon={() => {
+        //   return (
+        //     <Icon
+        //       name="expand-more"
+        //       size={20}
+        //       color={isDark ? colors.dark.white[100] : colors.light.primary[1]}
+        //       style={iconStyle}
+        //     />
+        //   );
+        // }}
       />
     </View>
     );
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
     dropdown: {
         height: Platform.OS === 'ios' ? 42 : 38,
         borderWidth: 1,
-        borderColor: colors.dark.white[100],
+        borderColor: 'gray',
         borderRadius: 10,
         alignItems:'center',
         justifyContent:'center'  

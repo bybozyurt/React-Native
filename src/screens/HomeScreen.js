@@ -1,158 +1,172 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Text,View, StyleSheet} from 'react-native';
 import CustomButton from '../components/Button';
-import { setLogout, saveProject } from '../redux/system/action';
+import { setLogout, hideLoader,toggleLoader } from '../redux/system/action';
 import { useDispatch } from 'react-redux';
 import { colors } from '../constants';
-import {layout} from '../constants';
 import CustomView from '../components/CustomView';
 import Header from '../components/Header';
+import Dropdown from '../components/DropDown';
+import apiConfig from '../config/apiConfig';
+import axios from '../utils/axios';
+import { getIsDarkMode } from '../redux/system/selector';
 import Input from '../components/Input';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getProject} from '../redux/system/selector';
 
 
 
 
 export default function HomeScreen({navigation}){
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const [time, setTime] = useState('');
-    const [project, SetProject] = useState('');
+  const isDarkMode = getIsDarkMode();
 
-    const timeKey = 'time';
-    const projectKey = 'project';
-    const keyS = [[timeKey,time],[projectKey,project]];
+    
+  const [project, SetProject] = useState([]);
+
+  const [pageData, setPageData] = useState({
+      description: '',
+      projectId: null,
+      time: '',
+      userId: 1,
+  });
+
     
 
-    const {width, height} = layout;
-    // const userInfo = useSelector(state => state.system.userInfo);
+    
 
-    //console.log('userInfo', userInfo);
+  const onChangeText = (key, text) => {
+    setPageData({...pageData, [key]: text});
+ };
 
-    const onLogOut = () => {
-        dispatch(setLogout());
-        console.log("logout");
-
+  const dropdownContainerStyle = {
+      ...styles.dropdownContainer,
+      backgroundColor: isDarkMode
+      ? colors.dark.primary[6]
+      : colors.light.background,
     };
 
-    const Save = async () => {
+  const saveProjectTimeline = () => {
 
-        try {
-            await AsyncStorage.multiSet(keyS);
-            console.log("Zaman ve Proje Kayıt Edildi");
-            ShowProject();
-            
-        } catch (error) {
-            console.log("Set hatası", error);
-            
-        }
-        
-    }
-
-    const ShowProject = async () => {
-
-        try {
-            const showTime = await AsyncStorage.getItem(timeKey);
-            const showProject = await AsyncStorage.getItem(projectKey);
-            dispatch(saveProject({
-                time:showTime,
-                project:showProject,
-
-            }));
-            
-        } catch (error) {
-            console.log("Get Hatası", error);
-            
-        }
-        
-
-    }
-
-    const projectDetail = getProject();
+      try {
+          console.log('PAGE', pageData);
+          axios
+          .post(apiConfig.prefixes.saveProject, pageData)
+          .then(response => console.log(JSON.stringify(response.data, null, 4)));
+      }
+        catch (error) {}
+    };
     
+  const fetchProjectList = () => {
+      try {
+            
+        axios.get(apiConfig.prefixes.projectList).then(response => {
+          if (response.status === 200) {
+            const {data} = response.data;
+             
+    
+            const newData = data
+              ? data.map(x => ({
+                  label: x.name,
+                  value: x.id,
+                }))
+              : [];
+    
+            SetProject(newData);
+          }
+        });
+        } catch (error) {
+          console.log("Error",error);
+        } finally {
+      }
+  };
+    
+    useEffect(() => {
+      
+      fetchProjectList();
+    }, []);
+
+
+  
 
     
-
+    
 
     return(
         <CustomView style={{flex:1}}>
-            <Header title={'Home'}/>
 
-           <View style={{marginVertical:15}}>
-               <Input
-               icon={'timer'}
-               value={time}
-               placeHolder={'Süre Giriniz'}
-               placeHolderTextColor={colors.cFFFFFF}
-               color={colors.cFFFFFF}
-               style={styles.input}
-               onChangeText={setTime}
+          <Header title={'Home'}/>
+         
+        
+           <View style={dropdownContainerStyle}>
 
-               />
+            <Dropdown
+            items={project}
+            placeholder={'Proje Seciniz'}
+            onValueChange={val => onChangeText('projectId', val)}
+            color={isDarkMode ? colors.cFFFFFF : colors.c324c94}
+            />
+      
            </View>
 
-           <View style={{marginVertical:15}}>
-               <Input
-               icon={'laptop-chromebook'}
-               value={project}
-               placeHolder={'Proje giriniz'}
-               placeHolderTextColor={colors.cFFFFFF}
-               color={colors.cFFFFFF}
-               style={styles.input}
-               onChangeText={SetProject}
-               
-               />
+           <View style={dropdownContainerStyle}>
+            <Dropdown
+            items={[
+            {label: '1 Saat', value: 60},
+            {label: '2 Saat', value: 120},
+            {label: '3 Saat', value: 180},
+            {label: '4 Saat', value: 240},
+            {label: '5 Saat', value: 300},
+            {label: '6 Saat', value: 360},
+            {label: '7 Saat', value: 420},
+            {label: '8 Saat', value: 480},
+            ]}
+            placeholder={'Zaman Seciniz'}
+            onValueChange={val => onChangeText('time', val)}
+            color={isDarkMode ? colors.cFFFFFF : colors.c324c94}
+            
+                
+            />
+              
            </View>
+           <Input
+            placeHolder={"Proje Acıklama"}
+            placeHolderTextColor={colors.cFFFFFF}
+            style={styles.inputContainer}
+            onChangeText={val => onChangeText('description', val)}
+            value={pageData.description}
+            multiline
+            color={colors.cFFFFFF}
+            />
 
-           <View style={{marginVertical:15}}>
+           <View style={styles.inputContainer}>
  
                 <CustomButton
-                    onPress={()=> Save()}
+                    onPress={()=> saveProjectTimeline()}
                     title={'Projeyi Kaydet'}
                 />
            </View>
-
-           <View style={styles.metaContainer}>
-               <Text style={styles.text}>{projectDetail.project}</Text>
-           </View>
-
-           <View style={styles.metaContainer}>
-               <Text style={styles.text}>{projectDetail.time}</Text>
-           </View>
+       
+          
 
 
-           <View style={{marginVertical:200}}>
- 
-                <CustomButton
-                    onPress={()=> onLogOut()}
-                    title={"Çıkış"}
-                />
-           </View>
-
-
-            
-                     
+                         
             
         </CustomView>
     );
 }
 
+
 const styles = StyleSheet.create({
-    input:{
-        marginVertical:5,
-        alignItems:'center'
+    
+    dropdownContainer:{
+        padding:15,
+        backgroundColor:colors.cFFFFFF,
+               
     },
-    text:{
-        fontSize:15, 
-        fontWeight:'bold',
-
+    inputContainer:{
+        marginVertical: 15,    
     },
-    metaContainer:{
-        marginVertical:15,
-        alignItems:'center'
-
-    }
+  
 });
 

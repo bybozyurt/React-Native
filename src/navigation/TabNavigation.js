@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import TaskScreen from '../screens/TaskScreen';
 import TabBarIcon from '../components/TabBarIcon';
+import MapScreen from '../screens/MapScreen';
 
 
 
@@ -12,7 +13,6 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNavigator(){
     const homeTitle = I18n.t('home');
-    console.log("homeTitle",homeTitle);
     const profileTitle = I18n.t('profile');
     const taskTitle = I18n.t('task');
 
@@ -43,6 +43,14 @@ export default function TabNavigator(){
                 tabBarIcon:()=><TabBarIcon name='today-outline'/>,
                 title: taskTitle,
             
+            }}
+        />
+        <Tab.Screen
+            name='Map'
+            component={MapScreen}
+            options={{
+                tabBarIcon:()=> <TabBarIcon name='map'/>,
+                title:'Map'
             }}
         />
 

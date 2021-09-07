@@ -12,7 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import { AppScreens } from '../navigation/RootNavigation';
 
 
-import { getFetchUserInfo, getUser } from '../redux/system/selector';
+import { getFetchUserInfo, getIsDarkMode, getUser } from '../redux/system/selector';
 import axios from 'axios';
 
 
@@ -38,8 +38,10 @@ export default function LoginScreen(){
         setPageData(page => ({...page, [key]:value}))
     };
 
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const toogleSwitch = () => setIsDarkMode(previousState => !previousState);
+    // const [isDarkMode, setIsDarkMode] = useState(false);
+    // const toogleSwitch = () => setIsDarkMode(previousState => !previousState);
+
+    const isDarkMode = getIsDarkMode();
 
     const theme = isDarkMode ? styles.lightTheme : styles.darkTheme;
 
@@ -211,12 +213,12 @@ export default function LoginScreen(){
                     </TouchableOpacity>
                     </View>
 
-                    <View>
+                    {/* <View>
                         <Switch
                             value={isDarkMode}
                             onChange={toogleSwitch}
                         />
-                    </View>
+                    </View> */}
 
                     
 
