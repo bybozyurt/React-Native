@@ -74,11 +74,15 @@ export default function LoginScreen(){
             const response = await axios.get(apiUrl);
             const fetchUsername = response.data.results[0].login.username
             const fetchPassword = response.data.results[0].login.password
+            const fetchLatitude = response.data.results[0].location.coordinates.latitude;
+            const fetchLongitude = response.data.results[0].location.coordinates.longitude;
             
             if(fetchUsername && fetchPassword){
                 dispatch(fetchUser({
                     fetchUsername:fetchUsername,
-                    fetchPassword:fetchPassword
+                    fetchPassword:fetchPassword,
+                    fetchLati:fetchLatitude,
+                    fetchLongitude:fetchLongitude
 
                 }));
             }
