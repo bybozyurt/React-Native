@@ -8,18 +8,19 @@ export default function MapScreen() {
     const fetchUserInfo = getFetchUserInfo();
     console.log("fetchUser",fetchUserInfo);
     const fetchLati = fetchUserInfo.fetchLati;
-    const fetchLongi = fetchUserInfo.fetchLongitude;
+    const fetchLongitude = fetchUserInfo.fetchLongitude;
 
   return (
     <MapView
-    
       style={styles.map}
       initialRegion={{
-        latitude: fetchLati,
-        longitude: fetchLongi,
+        latitude: parseFloat(fetchLati),
+        longitude: parseFloat(fetchLongitude),
+        latitudeDelta: 70,
+        longitudeDelta: 45
       }}>
       <Marker
-        coordinate={{latitude: fetchLati, longitude: fetchLongi}}
+        coordinate={{"latitude": parseFloat(fetchLati), "longitude": parseFloat(fetchLongitude)}}
         title={'title'}
         description={'description'}
       />
