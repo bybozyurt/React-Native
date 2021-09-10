@@ -38,9 +38,6 @@ export default function LoginScreen(){
         setPageData(page => ({...page, [key]:value}))
     };
 
-    // const [isDarkMode, setIsDarkMode] = useState(false);
-    // const toogleSwitch = () => setIsDarkMode(previousState => !previousState);
-
     const isDarkMode = getIsDarkMode();
 
     const theme = isDarkMode ? styles.lightTheme : styles.darkTheme;
@@ -72,19 +69,17 @@ export default function LoginScreen(){
     
         try {
             const response = await axios.get(apiUrl);
-            const fetchUsername = response.data.results[0].login.username
-            const fetchPassword = response.data.results[0].login.password
-            const fetchLatitude = response.data.results[0].location.coordinates.latitude;
-            const fetchLongitude = response.data.results[0].location.coordinates.longitude;
-            
+
+            const {login, location} = response.data.results[0];
+    
             if(fetchUsername && fetchPassword){
                 dispatch(fetchUser({
-                    fetchUsername:fetchUsername,
-                    fetchPassword:fetchPassword,
-                    fetchLati:fetchLatitude,
-                    fetchLongitude:fetchLongitude
+                fetchUsername:login.username,
+                fetchPassword:login.password,
+                fetchLati:location.coordinates.latitude,
+                fetchLongitude:location.coordinates.longitude
 
-                }));
+            }));
             }
             else{
                 console.log("Response alırken hata alındı");
